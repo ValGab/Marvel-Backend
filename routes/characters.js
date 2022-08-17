@@ -14,7 +14,6 @@ router.get("/characters", async (req, res) => {
           skip ? `&skip=${skip}` : ""
         }`
       );
-
       res.status(200).json(response.data);
     } catch (error) {
       console.log(error.response);
