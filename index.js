@@ -10,11 +10,11 @@ app.use(formidable());
 
 mongoose.connect(process.env.MONGODB_URI);
 
-// Import du fichier charcaters.js
+// Import du fichier user.js
 const userRoutes = require("./routes/user");
 app.use(userRoutes);
 
-// Import du fichier charcaters.js
+// Import du fichier characters.js
 const charcatersRoutes = require("./routes/characters");
 app.use(charcatersRoutes);
 
