@@ -66,7 +66,7 @@ router.post("/user/login", async (req, res) => {
           token: userToFind.token,
           account: { username: userToFind.account.username }, // ou account:newUser.account,
           favoritesCharacters: userToFind.favoritesCharacters,
-          favoritesComics: userToFind.favoritesCharacters,
+          favoritesComics: userToFind.favoritesComics,
         };
         res.status(200).json(response);
       } else {
