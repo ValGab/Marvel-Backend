@@ -78,6 +78,18 @@ router.post("/user/login", async (req, res) => {
   }
 });
 
+// Route pour obtenir les favoris de l'user
+router.get("/user/favorites", isAuthenticated, async (req, res) => {
+  try {
+    const favoritesCharacters = req.user.favoritesCharacters;
+    const favoritesComics = req.user.favoritesComics;
+    const userId = req.user._id;
+    res.status(200).json({ userId, favoritesCharacters, favoritesComics });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
 // Route pour ajouter un personnage aux favoris de l'user
 router.post(
   "/user/favoritesCharacter/create",
@@ -105,7 +117,7 @@ router.post(
           await userToModify.save();
           res.status(200).json({ message: "Personnage ajouté aux favoris" });
         } else {
-          res.status(401).json({ message: "Personnage déjà ajouté" });
+          res.status(409).json({ message: "Personnage déjà ajouté" });
         }
       }
     } catch (error) {
@@ -125,7 +137,7 @@ router.post(
       const userToModify = req.user;
 
       if (!userToModify.favoritesCharacters) {
-        res.status(200).json({ message: "Il n'y a aucun personnage" });
+        res.status(409).json({ message: "Il n'y a aucun personnage" });
       } else {
         let isPresent = false;
         let characterToDelete = null;
@@ -141,7 +153,7 @@ router.post(
           res.status(200).json({ message: "Personnage supprimé des favoris" });
         } else {
           res
-            .status(401)
+            .status(409)
             .json({ message: "Ce personnage n'est pas dans les favoris" });
         }
       }
@@ -178,7 +190,7 @@ router.post(
           await userToModify.save();
           res.status(200).json({ message: "Comics ajouté aux favoris" });
         } else {
-          res.status(401).json({ message: "Comics déjà ajouté aux favoris" });
+          res.status(409).json({ message: "Comics déjà ajouté aux favoris" });
         }
       }
     } catch (error) {
