@@ -113,7 +113,7 @@ router.post("/user/favoritesCharacter", isAuthenticated, async (req, res) => {
       for (let i = 0; i < userToModify.favoritesCharacters.length; i++) {
         if (id === userToModify.favoritesCharacters[i].id) {
           isPresent = true;
-          characterToDelete = userToModify.favoritesCharacters[i].id;
+          characterToDelete = i;
         }
       }
       if (!isPresent) {
@@ -138,12 +138,12 @@ router.post("/user/favoritesCharacter", isAuthenticated, async (req, res) => {
   }
 });
 
-// Route pour ajouter un comics aux favoris de l'user
+// Route pour ajouter/supprimer un comics aux favoris de l'user
 router.post("/user/favoritesComics", isAuthenticated, async (req, res) => {
   const { id, urlPic, title, description } = req.fields;
   // id = id du comics, urlPic = image du comics, title = nom du comics, description du comics
   try {
-    const result = { id, urlPic, title, description };
+    const result = { id, urlPic, title };
     const userToModify = req.user;
 
     if (!userToModify.favoritesComics) {
@@ -158,7 +158,7 @@ router.post("/user/favoritesComics", isAuthenticated, async (req, res) => {
       for (let i = 0; i < userToModify.favoritesComics.length; i++) {
         if (id === userToModify.favoritesComics[i].id) {
           isPresent = true;
-          comicsToDelete = userToModify.favoritesComics[i].id;
+          comicsToDelete = i;
         }
       }
       if (!isPresent) {
