@@ -132,7 +132,7 @@ router.post(
   isAuthenticated,
   async (req, res) => {
     const { id } = req.fields;
-    // id = id du personnage, urlPic = image du personnage, name = nom du personnage
+    // id = id du personnage
     try {
       const userToModify = req.user;
 
@@ -168,10 +168,10 @@ router.post(
   "/user/favoritesComics/create",
   isAuthenticated,
   async (req, res) => {
-    const { id, urlPic, title } = req.fields;
-    // id = id du personnage, urlPic = image du personnage, name = nom du personnage
+    const { id, urlPic, title, description } = req.fields;
+    // id = id du comics, urlPic = image du comics, title = nom du comics, description du comics
     try {
-      const result = { id, urlPic, title };
+      const result = { id, urlPic, title, description };
       const userToModify = req.user;
 
       if (!userToModify.favoritesComics) {
@@ -205,7 +205,7 @@ router.post(
   isAuthenticated,
   async (req, res) => {
     const { id } = req.fields;
-    // id = id du personnage, urlPic = image du personnage, name = nom du personnage
+    // id = id du comics
     try {
       const userToModify = req.user;
 
