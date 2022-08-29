@@ -100,7 +100,15 @@ router.post("/user/favoritesCharacter", isAuthenticated, async (req, res) => {
     const result = { id, urlPic, name };
     const userToModify = req.user;
 
-    if (!userToModify.favoritesCharacters) {
+    let isPresent = false;
+    let characterToDelete = null;
+    for (let i = 0; i < userToModify.favoritesCharacters.length; i++) {
+      if (id === userToModify.favoritesCharacters[i].id) {
+        isPresent = true;
+        characterToDelete = i;
+      }
+    }
+    if (!isPresent) {
       userToModify.favoritesCharacters.push(result);
       await userToModify.save();
       const newFavChar = userToModify.favoritesCharacters;
@@ -108,30 +116,13 @@ router.post("/user/favoritesCharacter", isAuthenticated, async (req, res) => {
         .status(200)
         .json({ message: "Personnage ajouté aux favoris", newFavChar });
     } else {
-      let isPresent = false;
-      let characterToDelete = null;
-      for (let i = 0; i < userToModify.favoritesCharacters.length; i++) {
-        if (id === userToModify.favoritesCharacters[i].id) {
-          isPresent = true;
-          characterToDelete = i;
-        }
-      }
-      if (!isPresent) {
-        userToModify.favoritesCharacters.push(result);
-        await userToModify.save();
-        const newFavChar = userToModify.favoritesCharacters;
-        res
-          .status(200)
-          .json({ message: "Personnage ajouté aux favoris", newFavChar });
-      } else {
-        userToModify.favoritesCharacters.splice(characterToDelete, 1);
-        await userToModify.save();
-        const newFavChar = userToModify.favoritesCharacters;
+      userToModify.favoritesCharacters.splice(characterToDelete, 1);
+      await userToModify.save();
+      const newFavChar = userToModify.favoritesCharacters;
 
-        res
-          .status(200)
-          .json({ message: "Personnage supprimé des favoris", newFavChar });
-      }
+      res
+        .status(200)
+        .json({ message: "Personnage supprimé des favoris", newFavChar });
     }
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -140,44 +131,34 @@ router.post("/user/favoritesCharacter", isAuthenticated, async (req, res) => {
 
 // Route pour ajouter/supprimer un comics aux favoris de l'user
 router.post("/user/favoritesComics", isAuthenticated, async (req, res) => {
-  const { id, urlPic, title, description } = req.fields;
-  // id = id du comics, urlPic = image du comics, title = nom du comics, description du comics
+  const { id, urlPic, title } = req.fields;
+  // id = id du comics, urlPic = image du comics, title = nom du comics
   try {
     const result = { id, urlPic, title };
     const userToModify = req.user;
 
-    if (!userToModify.favoritesComics) {
+    let isPresent = false;
+    let comicsToDelete = null;
+    for (let i = 0; i < userToModify.favoritesComics.length; i++) {
+      if (id === userToModify.favoritesComics[i].id) {
+        isPresent = true;
+        comicsToDelete = i;
+      }
+    }
+    if (!isPresent) {
       userToModify.favoritesComics.push(result);
       await userToModify.save();
       const newFavCom = userToModify.favoritesComics;
 
       res.status(200).json({ message: "Comics ajouté aux favoris", newFavCom });
     } else {
-      let isPresent = false;
-      let comicsToDelete = null;
-      for (let i = 0; i < userToModify.favoritesComics.length; i++) {
-        if (id === userToModify.favoritesComics[i].id) {
-          isPresent = true;
-          comicsToDelete = i;
-        }
-      }
-      if (!isPresent) {
-        userToModify.favoritesComics.push(result);
-        await userToModify.save();
-        const newFavCom = userToModify.favoritesComics;
+      userToModify.favoritesComics.splice(comicsToDelete, 1);
+      await userToModify.save();
+      const newFavCom = userToModify.favoritesComics;
 
-        res
-          .status(200)
-          .json({ message: "Comics ajouté aux favoris", newFavCom });
-      } else {
-        userToModify.favoritesComics.splice(comicsToDelete, 1);
-        await userToModify.save();
-        const newFavCom = userToModify.favoritesComics;
-
-        res
-          .status(200)
-          .json({ message: "Comics supprimé des favoris", newFavCom });
-      }
+      res
+        .status(200)
+        .json({ message: "Comics supprimé des favoris", newFavCom });
     }
   } catch (error) {
     res.status(400).json({ message: error.message });

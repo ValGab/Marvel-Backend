@@ -10,6 +10,10 @@ app.use(formidable());
 
 mongoose.connect(process.env.MONGODB_URI);
 
+app.get("/", (req, res) => {
+  res.status(200).json({ message: "Hello from the universe" });
+});
+
 // Import du fichier user.js
 const userRoutes = require("./routes/user");
 app.use(userRoutes);
